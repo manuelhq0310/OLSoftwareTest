@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using TestAPIRest.Services;
 using TestDB;
 using TestDB.Models;
 
@@ -9,29 +10,17 @@ namespace TestAPIRest.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private TestContext _testContext;
+        private readonly ProductService _productService;
 
-        public ProductsController(TestContext testContext)
+        public ProductsController(ProductService productService)
         {
-            _testContext = testContext;
+            _productService = productService;
         }
 
         [HttpGet]
-        public Task<List<Product>> GetProducts() => Task.FromResult(_testContext.Products.ToList());
+        public Task<List<Product>> GetProducts() => _productService.GetProducts();
 
         [HttpPost]
-        public Task<bool> InsertProduct(Product newProduct)
-        {
-            try
-            {
-                _testContext.Products.Add(newProduct);
-                _testContext.SaveChanges();
-                return Task.FromResult(true);
-            }
-            catch (Exception)
-            {
-                return Task.FromResult(false);
-            }
-        }
+        public Task<bool> InsertProduct(Product newProduct) => _productService.InsertProduct(newProduct);        
     }
 }

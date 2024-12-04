@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Numerics;
+using TestAPIRest.Services;
 using TestDB;
 using TestDB.Models;
 
@@ -10,29 +11,17 @@ namespace TestAPIRest.Controllers
     [ApiController]
     public class ClientsController : ControllerBase
     {
-        private TestContext _testContext;
+        private readonly ClientService _clientService;
 
-        public ClientsController(TestContext testContext)
-        {
-            _testContext = testContext;
+        public ClientsController(ClientService clientService)
+        {            
+            _clientService = clientService;
         }
 
         [HttpGet]
-        public Task<List<Person>> GetClients() => Task.FromResult(_testContext.People.ToList());
+        public Task<List<Person>> GetClients() => _clientService.GetClients();
 
         [HttpPost]
-        public Task<bool> InsertClient(Person newPerson)
-        {
-            try
-            {
-                _testContext.People.Add(newPerson);
-                _testContext.SaveChanges();
-                return Task.FromResult(true);
-            }
-            catch (Exception)
-            {
-                return Task.FromResult(false);
-            }
-        }
+        public Task<bool> InsertClient(Person newPerson) => _clientService.InsertClient(newPerson);
     }
 }

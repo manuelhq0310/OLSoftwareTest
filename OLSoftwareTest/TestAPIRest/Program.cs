@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using TestAPIRest.Services;
 using TestDB;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +14,10 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<TestContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("OLTestConnection"))
 );
+
+builder.Services.AddScoped<ClientService>();
+builder.Services.AddScoped<ProductService>();
+builder.Services.AddScoped<SendGridService>();
 
 var app = builder.Build();
 
