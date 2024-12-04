@@ -19,10 +19,10 @@ namespace TestDB.Models
         [Required(ErrorMessage = "El campo 'Identification' es obligatorio.")]
         public string IdentificationNumber { get; set; }
 
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
-        public string Phone { get; set; }
+        public string? Phone { get; set; }
 
-        public long DateOfBirth { get; set; }
+        public long? DateOfBirth { get; set; }
     }
 }
